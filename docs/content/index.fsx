@@ -1,10 +1,10 @@
-﻿(*** hide ***)
+(*** hide ***)
 // This block of code is omitted in the generated HTML documentation. Use 
 // it to define helpers that you do not want to show in the documentation.
 #I "../../bin"
 
 (**
-FSharp.ProjectScaffold
+FSM.Orleans
 ======================
 
 Documentation
@@ -13,8 +13,8 @@ Documentation
   <div class="span1"></div>
   <div class="span6">
     <div class="well well-small" id="nuget">
-      The FSharp.ProjectScaffold library can be <a href="https://nuget.org/packages/FSharp.ProjectScaffold">installed from NuGet</a>:
-      <pre>PM> Install-Package FSharp.ProjectScaffold</pre>
+      The FSM.Orleans library can be <a href="https://nuget.org/packages/FSM.Orleans">installed from NuGet</a>:
+      <pre>PM> Install-Package FSM.Orleans</pre>
     </div>
   </div>
   <div class="span1"></div>
@@ -26,8 +26,8 @@ Example
 This example demonstrates using a function defined in this sample library.
 
 *)
-#r "FSharp.ProjectScaffold.dll"
-open FSharp.ProjectScaffold
+#r "FSM.Orleans.dll"
+open FSM.Orleans
 
 printfn "hello = %i" <| Library.hello 0
 
@@ -59,9 +59,9 @@ The library is available under Public Domain license, which allows modification 
 redistribution for both commercial and non-commercial purposes. For more information see the 
 [License file][license] in the GitHub repository. 
 
-  [content]: https://github.com/fsprojects/FSharp.ProjectScaffold/tree/master/docs/content
-  [gh]: https://github.com/fsprojects/FSharp.ProjectScaffold
-  [issues]: https://github.com/fsprojects/FSharp.ProjectScaffold/issues
-  [readme]: https://github.com/fsprojects/FSharp.ProjectScaffold/blob/master/README.md
-  [license]: https://github.com/fsprojects/FSharp.ProjectScaffold/blob/master/LICENSE.txt
+  [content]: https://github.com/fsprojects/FSM.Orleans/tree/master/docs/content
+  [gh]: https://github.com/fsprojects/FSM.Orleans
+  [issues]: https://github.com/fsprojects/FSM.Orleans/issues
+  [readme]: https://github.com/fsprojects/FSM.Orleans/blob/master/README.md
+  [license]: https://github.com/fsprojects/FSM.Orleans/blob/master/LICENSE.txt
 *)

@@ -1,17 +1,17 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>e789c72a-5cfd-436b-8ef1-61aa2852a89f</ProjectGuid>
+    <ProjectGuid>e4c7dacd-ec9f-4ecb-a984-ab69e0242295</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>FSharp.ProjectTemplate.Tests</RootNamespace>
-    <AssemblyName>FSharp.ProjectTemplate.Tests</AssemblyName>
+    <RootNamespace>FSM.Orleans.Tests</RootNamespace>
+    <AssemblyName>FSM.Orleans.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFSharpCoreVersion>4.3.0.0</TargetFSharpCoreVersion>
-    <Name>FSharp.ProjectTemplate.Tests</Name>
+    <Name>FSM.Orleans.Tests</Name>
     <TargetFrameworkProfile />
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
   </PropertyGroup>
@@ -72,9 +72,9 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Numerics" />
-    <ProjectReference Include="..\..\src\FSharp.ProjectTemplate\FSharp.ProjectTemplate.fsproj">
-      <Name>FSharp.ProjectTemplate</Name>
-      <Project>{7e90d6ce-a10b-4858-a5bc-41df7250cbca}</Project>
+    <ProjectReference Include="..\..\src\FSM.Orleans\FSM.Orleans.fsproj">
+      <Name>FSM.Orleans</Name>
+      <Project>{9e686e4d-794c-4561-8d23-e40f80e8e96f}</Project>
       <Private>True</Private>
     </ProjectReference>
   </ItemGroup>

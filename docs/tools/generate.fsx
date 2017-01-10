@@ -11,17 +11,17 @@
 // (This is the original behaviour of ProjectScaffold prior to multi project support)
 let referenceBinaries = []
 // Web site location for the generated documentation
-let website = "/##ProjectName##"
+let website = "/FSM.Orleans"
 
-let githubLink = "##GitUrl##/##GitHome##/##GitName##"
+let githubLink = "https://github.com/johnazariah/fsm-orleans"
 
 // Specify more information about your project
 let info =
-  [ "project-name", "##ProjectName##"
-    "project-author", "##Author##"
-    "project-summary", "##Summary##"
+  [ "project-name", "FSM.Orleans"
+    "project-author", "John Azariah"
+    "project-summary", "Strongly Typed State Machines for Orleans Actors[1;5D[1;5D[1;5D[1;5D[1;5D[1;5D[1;5D[1;5D[1;5D[1;5D[1;5D[1;5D[1;5D[1;5D[D[D[D[D[D[D[D[D[D[C[C[C[ D[2~SL[2~/Code Generator for Orleans Actors"
     "project-github", githubLink
-    "project-nuget", "http://nuget.org/packages/##ProjectName##" ]
+    "project-nuget", "http://nuget.org/packages/FSM.Orleans" ]
 
 // --------------------------------------------------------------------------------------
 // For typical project, no changes are needed below

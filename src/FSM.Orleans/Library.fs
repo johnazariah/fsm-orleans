@@ -1,4 +1,4 @@
-﻿namespace FSharp.ProjectTemplate
+namespace FSM.Orleans
 
 /// Documentation for my library
 ///

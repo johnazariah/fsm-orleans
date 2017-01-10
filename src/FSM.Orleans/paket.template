@@ -1,0 +1,25 @@
+type project
+title
+    FSM.Orleans
+owners
+    John Azariah
+authors 
+    John Azariah
+projectUrl
+    https://github.com/johnazariah/fsm-orleans
+iconUrl
+    https://raw.githubusercontent.com/johnazariah/fsm-orleans/master/docs/files/img/logo.png
+licenseUrl
+    https://github.com/johnazariah/fsm-orleans/blob/master/LICENSE.txt
+requireLicenseAcceptance
+    false
+copyright
+    Copyright 2015
+tags
+    Orleans State-Machines DSL Code-Generator
+summary
+    Strongly Typed State Machines for Orleans Actors[1;5D[1;5D[1;5D[1;5D[1;5D[1;5D[1;5D[1;5D[1;5D[1;5D[1;5D[1;5D[1;5D[1;5D[D[D[D[D[D[D[D[D[D[C[C[C[ D[2~SL[2~/Code Generator for Orleans Actors
+description
+    [A[BA tool to parse and generate strongly-typed Orleans grains to implement state-machine-based applications
+
+
