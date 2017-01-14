@@ -3,7 +3,7 @@
 
 # FSM Orleans
 
-Most multi-user applications are informally specified state-machines with intertwined business-logic and state-management.
+Most interactive applications are informally specified state-machines with intertwined business-logic and state-management.
 
 With the possibility of using virtual actor systems, it is highly desirable to be able to formally specify the states, messages and transitions associated with an application separate from the business logic so that we can better reason about an application's behaviour and correctness.
 
