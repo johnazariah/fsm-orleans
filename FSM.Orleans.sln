@@ -37,6 +37,8 @@ Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "FSM.Orleans.Tests", "tests\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FSM.Orleans.VSIX", "src\FSM.Orleans.VSIX\FSM.Orleans.VSIX.csproj", "{4F348962-1ACC-4598-80B5-CDF108C11A1D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FSM.Orleans.Core", "src\FSM.Orleans.Core\FSM.Orleans.Core.csproj", "{9058122C-09E1-40AB-805D-B4BA8704EEEE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -55,6 +57,10 @@ Global
 		{4F348962-1ACC-4598-80B5-CDF108C11A1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4F348962-1ACC-4598-80B5-CDF108C11A1D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4F348962-1ACC-4598-80B5-CDF108C11A1D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9058122C-09E1-40AB-805D-B4BA8704EEEE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9058122C-09E1-40AB-805D-B4BA8704EEEE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9058122C-09E1-40AB-805D-B4BA8704EEEE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9058122C-09E1-40AB-805D-B4BA8704EEEE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
