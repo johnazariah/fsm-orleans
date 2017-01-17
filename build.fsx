@@ -32,7 +32,7 @@ let project = "FSM.Orleans"
 
 // Short summary of the project
 // (used as description in AssemblyInfo and as a short summary for NuGet package)
-let summary = "Strongly Typed State Machines for Orleans Actors[1;5D[1;5D[1;5D[1;5D[1;5D[1;5D[1;5D[1;5D[1;5D[1;5D[1;5D[1;5D[1;5D[1;5D[D[D[D[D[D[D[D[D[D[C[C[C[ D[2~SL[2~/Code Generator for Orleans Actors"
+let summary = "Strongly Typed State Machines for Orleans Actors - DSL/Parser/Code Generator/VSIX"
 
 // Longer description of the project
 // (used as a description for NuGet package; line breaks are automatically cleaned up)

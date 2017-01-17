@@ -52,7 +52,7 @@ module Analyser =
                 trySetProperty ((function | Identifier      mi -> Some mi | _ -> None), (fun vm mi -> if (vm.Identifier   = Identifier.Zero)   then Some mi else None), (fun vm mi -> {vm with Identifier   = mi }))
                 trySetProperty ((function | DataBlock       mi -> Some mi | _ -> None), (fun vm mi -> if (vm.DataBlock    = DataBlock.Zero)    then Some mi else None), (fun vm mi -> {vm with DataBlock    = mi }))
                 trySetProperty ((function | MessageBlock    mi -> Some mi | _ -> None), (fun vm mi -> if (vm.MessageBlock = MessageBlock.Zero) then Some mi else None), (fun vm mi -> {vm with MessageBlock = mi }))
-                trySetProperty ((function | StateDefinition mi -> Some mi | _ -> None), (fun vm mi -> Some mi), (fun vm mi -> {vm with StateDefinitions = mi :: vm.StateDefinitions}))
+                trySetProperty ((function | StateDefinition mi -> Some mi | _ -> None), (fun _ mi -> Some mi), (fun vm mi -> {vm with StateDefinitions = mi :: vm.StateDefinitions}))
             ]
 
         let setSingleProperty mi vm' f = f vm' mi
