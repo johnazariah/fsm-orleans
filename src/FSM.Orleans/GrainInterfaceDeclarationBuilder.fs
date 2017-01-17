@@ -8,7 +8,7 @@ open BrightSword.RoslynWrapper
 open CSharp.UnionTypes
 
 [<AutoOpen>]
-module IGrainDeclarationBuilder =
+module GrainInterfaceDeclarationBuilder =
     let build_grain_interface vm =
         let sm = StateMachine(vm)
 
