@@ -1,14 +1,13 @@
 ﻿namespace FSM.Orleans
 
-open Microsoft.CodeAnalysis
-open Microsoft.CodeAnalysis.CSharp
-open Microsoft.CodeAnalysis.CSharp.Syntax
-
-open BrightSword.RoslynWrapper
-open CSharp.UnionTypes
-
 [<AutoOpen>]
 module GrainInterfaceDeclarationBuilder =
+    open Microsoft.CodeAnalysis
+    open Microsoft.CodeAnalysis.CSharp
+    open Microsoft.CodeAnalysis.CSharp.Syntax
+
+    open BrightSword.RoslynWrapper
+
     let build_grain_interface vm =
         let sm = StateMachine(vm)
 

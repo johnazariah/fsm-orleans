@@ -55,7 +55,7 @@ module UnitTestUtilities =
 
     let test_codegen_implementation_member t generator expected = 
         let implementation = 
-            t |> build_implementation_class_with_member_generators [generator]
+            t |> build_grain_implementation_with_member_generators [generator]
 
         let actual = 
             ``compilation unit``

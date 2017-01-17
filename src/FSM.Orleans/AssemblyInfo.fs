@@ -4,7 +4,7 @@ open System.Reflection
 
 [<assembly: AssemblyTitleAttribute("FSM.Orleans")>]
 [<assembly: AssemblyProductAttribute("FSM.Orleans")>]
-[<assembly: AssemblyDescriptionAttribute("Strongly Typed State Machines for Orleans Actors[1;5D[1;5D[1;5D[1;5D[1;5D[1;5D[1;5D[1;5D[1;5D[1;5D[1;5D[1;5D[1;5D[1;5D[D[D[D[D[D[D[D[D[D[C[C[C[ D[2~SL[2~/Code Generator for Orleans Actors")>]
+[<assembly: AssemblyDescriptionAttribute("Strongly Typed State Machines for Orleans Actors - DSL/Parser/Code Generator/VSIX")>]
 [<assembly: AssemblyVersionAttribute("1.0")>]
 [<assembly: AssemblyFileVersionAttribute("1.0")>]
 [<assembly: AssemblyConfigurationAttribute("Release")>]
@@ -13,7 +13,7 @@ do ()
 module internal AssemblyVersionInformation =
     let [<Literal>] AssemblyTitle = "FSM.Orleans"
     let [<Literal>] AssemblyProduct = "FSM.Orleans"
-    let [<Literal>] AssemblyDescription = "Strongly Typed State Machines for Orleans Actors[1;5D[1;5D[1;5D[1;5D[1;5D[1;5D[1;5D[1;5D[1;5D[1;5D[1;5D[1;5D[1;5D[1;5D[D[D[D[D[D[D[D[D[D[C[C[C[ D[2~SL[2~/Code Generator for Orleans Actors"
+    let [<Literal>] AssemblyDescription = "Strongly Typed State Machines for Orleans Actors - DSL/Parser/Code Generator/VSIX"
     let [<Literal>] AssemblyVersion = "1.0"
     let [<Literal>] AssemblyFileVersion = "1.0"
     let [<Literal>] AssemblyConfiguration = "Release"

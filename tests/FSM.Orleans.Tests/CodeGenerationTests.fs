@@ -14,7 +14,7 @@ open FSM.Orleans
 open NUnit.Framework
 
 [<AutoOpen>]
-module CodeGenerationTests = 
+module CodeGenerationTests =
     [<Test>]
     let ``code-gen: grain interface``() =
 
@@ -246,7 +246,7 @@ module CodeGenerationTests =
 }"
 
         test_codegen_implementation_member BankAccountFSM to_processor_map expected
-        
+
     [<Test>]
     let ``code-gen-implementation: message endpoints``() =
 

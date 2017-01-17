@@ -68,11 +68,11 @@
     <Compile Include="Parser.fs" />
     <Compile Include="Analyser.fs" />
     <Compile Include="StateMachine.fs" />
-    <Compile Include="GrainImplementationDeclarationBuilder.fs" />
-    <Compile Include="NamespaceBuilder.fs" />
     <Compile Include="GrainInterfaceDeclarationBuilder.fs" />
     <Compile Include="UnionBuilders.fs" />
     <Compile Include="GrainStateDeclarationBuilder.fs" />
+    <Compile Include="GrainImplementationDeclarationBuilder.fs" />
+    <Compile Include="NamespaceBuilder.fs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="FSharp.Core, Version=4.4.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">

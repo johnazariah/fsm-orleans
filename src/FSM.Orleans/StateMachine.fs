@@ -3,13 +3,13 @@
 open CSharp.UnionTypes
 
 [<AutoOpen>]
-module Machine = 
+module Machine =
     let private to_union_member member_name = UnionMember.apply(UnionMemberName member_name, None)
 
     let private to_typed_union_member (member_name, member_type) =
         UnionMember.apply(UnionMemberName member_name, Some <| FullTypeName.apply((member_type, []), None))
 
-    let text_to_valid_machine = 
+    let text_to_valid_machine =
         parse_machine_from_text_or_fail >> validate_parsed_machine
 
     type StateMachine (vm) = class
