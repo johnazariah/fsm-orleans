@@ -240,7 +240,7 @@ module CodeGenerationTests =
 
     public class BankAccountGrainState : StateMachineGrainState<BankAccountData, BankAccountState>
     {
-        public BankAccount(BankAccountData stateMachineData, BankAccountState stateMachineState) : base(stateMachineData, stateMachineState)
+        public BankAccountGrainState(BankAccountData stateMachineData, BankAccountState stateMachineState) : base(stateMachineData, stateMachineState)
         {
         }
     }

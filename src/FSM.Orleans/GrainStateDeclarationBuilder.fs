@@ -13,7 +13,7 @@ module GrainStateDeclarationBuilder =
         let grainStateClass = sm.grain_state_typename
         let baseClass = sprintf "StateMachineGrainState<%s, %s>" sm.data_typename sm.state_typename |> Some
         let ctor =
-            ``constructor`` sm.machine_name ``(`` [("stateMachineData", ``type`` sm.data_typename);("stateMachineState", ``type`` sm.state_typename)] ``)``
+            ``constructor`` grainStateClass ``(`` [("stateMachineData", ``type`` sm.data_typename);("stateMachineState", ``type`` sm.state_typename)] ``)``
                 ``:`` ["stateMachineData"; "stateMachineState"]
                 [``public``]
                 ``{`` [] ``}``
