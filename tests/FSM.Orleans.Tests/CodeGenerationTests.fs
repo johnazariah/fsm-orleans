@@ -277,9 +277,9 @@ module CodeGenerationTests =
 
     public partial class BankAccount : StateMachineGrain<BankAccountGrainState,BankAccountData,BankAccountState,BankAccountMessage>, IStateMachineGrain<BankAccountData, BankAccountMessage>
     {
-        public async Task<BankAccountData> Deposit(Amount amount) => await ProcessMessage(BankAccountMessage.Deposit(amount));
-        public async Task<BankAccountData> Withdrawal(Amount amount) => await ProcessMessage(BankAccountMessage.Withdrawal(amount));
-        public async Task<BankAccountData> Close() => await ProcessMessage(BankAccountMessage.Close());
+        public async Task<BankAccountData> Deposit(Amount amount) => await ProcessMessage(BankAccountMessage.DepositMessage(amount));
+        public async Task<BankAccountData> Withdrawal(Amount amount) => await ProcessMessage(BankAccountMessage.WithdrawalMessage(amount));
+        public async Task<BankAccountData> Close() => await ProcessMessage(BankAccountMessage.CloseMessage());
     }
 }"
 

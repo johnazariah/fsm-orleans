@@ -56,7 +56,7 @@ module GrainImplementationDeclarationBuilder =
 
             let methodBody =
                 let delegator =
-                    let methodName = ident (sprintf "%sMessage.%s" sm.machine_name msg.MessageName.unapply)
+                    let methodName = ident (sprintf "%sMessage.%sMessage" sm.machine_name msg.MessageName.unapply)
                     ``invoke`` methodName ``(`` methodInvokeArguments ``)``
                 in
                 ``await`` (``invoke`` (ident "ProcessMessage") ``(`` [ delegator ] ``)``)
