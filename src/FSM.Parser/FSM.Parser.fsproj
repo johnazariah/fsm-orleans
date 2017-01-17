@@ -47,7 +47,10 @@
     <Compile Include="AST.fs" />
     <Compile Include="Parser.fs" />
     <Compile Include="Analyser.fs" />
-    <Compile Include="UnionTypes.fs" />
+    <Compile Include="StateMachine.fs" />
+    <Compile Include="IGrainDeclarationBuilder.fs" />
+    <Compile Include="GrainImplementationDeclarationBuilder.fs" />
+    <Compile Include="NamespaceBuilder.fs" />
     <None Include="paket.references" />
   </ItemGroup>
   <PropertyGroup>

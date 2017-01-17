@@ -8,16 +8,8 @@ namespace FSM.BankAccount.Orleans
         StateMachineGrain<BankAccountGrainState, BankAccountData, BankAccountState, BankAccountMessage>,
         IBankAccount
     {
-        public async Task<BankAccountData> Deposit(Amount amount) => await ProcessMessage(BankAccountMessage.NewDepositMessage(amount));
-
-        public async Task<BankAccountData> Withdrawal(Amount amount)
-        {
-            return await ProcessMessage(BankAccountMessage.NewWithdrawMessage(amount));
-        }
-
-        public async Task<BankAccountData> Close()
-        {
-            return await ProcessMessage(BankAccountMessage.CloseMessage);
-        }
+        public async Task<BankAccountData> Deposit(Amount amount) => await ProcessMessage(BankAccountMessage.DepositMessage(amount));
+        public async Task<BankAccountData> Withdrawal(Amount amount) => await ProcessMessage(BankAccountMessage.WithdrawMessage(amount));
+        public async Task<BankAccountData> Close() => await ProcessMessage(BankAccountMessage.CloseMessage);
     }
 }

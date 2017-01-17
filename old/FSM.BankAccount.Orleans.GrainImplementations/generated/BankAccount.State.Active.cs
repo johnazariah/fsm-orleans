@@ -21,22 +21,19 @@ namespace FSM.BankAccount.Orleans
         {
             private static readonly IActiveStateMessageHandler _handler = new ActiveStateMessageHandler();
 
-            public static Func<Amount, Task<BankAccountGrainState>> HandleActiveStateDepositMessage(BankAccountGrainState state)
-            {
-                return async _ =>
+            public static Func<Amount, Task<BankAccountGrainState>> HandleActiveStateDepositMessage(BankAccountGrainState state) => 
+                async _ =>
                 {
                     var result = await _handler.Deposit(state, _);
                     return (BankAccountGrainState)(result);
                 };
-            }
-            public static Func<Amount, Task<BankAccountGrainState>> HandleActiveStateWithdrawMessage(BankAccountGrainState state)
-            {
-                return async _ =>
+
+            public static Func<Amount, Task<BankAccountGrainState>> HandleActiveStateWithdrawMessage(BankAccountGrainState state) =>
+                async _ =>
                 {
                     var result = await _handler.Withdraw(state, _);
                     return (BankAccountGrainState)(result);
                 };
-            }
         }
 
         private interface IActiveStateMessageHandler

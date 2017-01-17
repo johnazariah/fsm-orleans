@@ -140,7 +140,7 @@ NUGET
       System.Threading.Tasks (>= 4.0) - framework: dnxcore50
       System.Xml.XDocument (>= 4.0) - framework: dnxcore50
     Microsoft.VisualStudio.Utilities (14.3.25407)
-    Microsoft.VisualStudio.Validation (14.1.111)
+    Microsoft.VisualStudio.Validation (15.0.75)
       System.Diagnostics.Debug (>= 4.0) - framework: dnxcore50
       System.Diagnostics.Tools (>= 4.0) - framework: dnxcore50
       System.Globalization (>= 4.0) - framework: dnxcore50
@@ -643,7 +643,7 @@ NUGET
 GROUP Build
 NUGET
   remote: https://www.nuget.org/api/v2
-    FAKE (4.48)
+    FAKE (4.49.1)
     FSharp.Compiler.Service (2.0.0.6)
     FSharp.Formatting (2.14.4)
       FSharp.Compiler.Service (2.0.0.6)
@@ -656,12 +656,12 @@ NUGET
     Microsoft.Net.Http (2.2.29) - framework: net10, net11, net20, net30, net35, net40, net40-full
       Microsoft.Bcl (>= 1.1.10)
       Microsoft.Bcl.Build (>= 1.0.14)
-    Octokit (0.23)
+    Octokit (0.24)
       Microsoft.Net.Http  - framework: net10, net11, net20, net30, net35, net40, net40-full
     SourceLink.Fake (1.1)
 GITHUB
   remote: fsharp/FAKE
-    modules/Octokit/Octokit.fsx (749fbad6f6808c569e542ee5eaf3c4cc7275c029)
+    modules/Octokit/Octokit.fsx (4eba8e70da347f09158a7940ee68614df37a7de7)
       Octokit (>= 0.20)
 GROUP Test
 NUGET

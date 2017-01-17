@@ -2,5 +2,3 @@
 
 [<AutoOpen>]
 module ABCodeGen =
-
-
