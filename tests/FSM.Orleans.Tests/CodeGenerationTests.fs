@@ -30,7 +30,7 @@ module CodeGenerationTests =
     }
 }"
 
-        test_codegen_interface BankAccountFSM build_grain_interface expected
+        test_codegen_namespace_member BankAccountFSM build_grain_interface expected
 
     [<Test>]
     let ``code-gen: data union``() =
@@ -76,7 +76,7 @@ module CodeGenerationTests =
     }
 }"
 
-        test_codegen_interface BankAccountFSM build_data_union expected
+        test_codegen_namespace_member BankAccountFSM build_data_union expected
 
     [<Test>]
     let ``code-gen: state union``() =
@@ -139,7 +139,7 @@ module CodeGenerationTests =
     }
 }"
 
-        test_codegen_interface BankAccountFSM build_state_union expected
+        test_codegen_namespace_member BankAccountFSM build_state_union expected
 
     [<Test>]
     let ``code-gen: message union``() =
@@ -213,4 +213,21 @@ module CodeGenerationTests =
     }
 }"
 
-        test_codegen_interface BankAccountFSM build_message_union expected
+        test_codegen_namespace_member BankAccountFSM build_message_union expected
+
+
+    [<Test>]
+    let ``code-gen-implementation: processor map``() =
+
+        let expected = @"namespace FSM.BankAccount.Orleans
+{
+    using System;
+
+    public partial class BankAccount : StateMachineGrain<BankAccountGrainState,BankAccountData,BankAccountState,BankAccountMessage>, IStateMachineGrain<BankAccountData, BankAccountMessage>
+    {
+        protected override Func<BankAccountGrainState, BankAccountMessage, Task<BankAccountGrainState>> GetProcessorFunc(BankAccountGrainState state) => state.Match<Func<BankAccountGrainState, BankAccountMessage, Task<BankAccountGrainState>>>(() => ClosedStateProcessor, () => OverdrawnStateProcessor, () => ActiveStateProcessor, () => ZeroBalanceStateProcessor);
+    }
+}"
+
+        test_codegen_implementation_member BankAccountFSM to_processor_map expected
+        

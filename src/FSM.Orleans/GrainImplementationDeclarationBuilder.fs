@@ -8,7 +8,7 @@ open BrightSword.RoslynWrapper
 open CSharp.UnionTypes
 
 [<AutoOpen>]
-module internal GrainImplementationDeclarationBuilder = 
+module GrainImplementationDeclarationBuilder = 
     let private state_to_state_processor_name s =
         sprintf "%sStateProcessor" s.StateName.unapply 
 
@@ -71,3 +71,16 @@ module internal GrainImplementationDeclarationBuilder =
         in 
         vm.MessageBlock.Messages |> List.map to_message_endpoint
 
+
+    let build_implementation_class_with_member_generators fns vm = 
+        let sm = StateMachine vm
+        let members = fns |> Seq.collect (fun f -> vm |> (f >> List.toSeq))
+        [        
+            ``class`` sm.machine_name ``<<`` [] ``>>``
+                ``:`` (Some sm.grain_impl_base_typename) ``,`` [ sm.grain_interface_base_typename ]
+                [``public``; ``partial``]
+                ``{``
+                    members
+                ``}``
+                :> MemberDeclarationSyntax
+        ]

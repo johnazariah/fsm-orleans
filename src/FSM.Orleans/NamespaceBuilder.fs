@@ -9,13 +9,17 @@ open BrightSword.RoslynWrapper
 
 [<AutoOpen>]
 module NamespaceBuilder = 
-    let to_namespace_builder_internal fns vm = 
+    let build_namespace_with_members members vm = 
         let sm = StateMachine vm
-        let members = fns |> Seq.collect (fun f -> vm |> (f >> List.toSeq))
         in
         ``namespace`` sm.namespace_name
             ``{``
                 []
                 members
             ``}``
+     
+    let build_namespace_with_member_generators fns vm = 
+        let members = fns |> Seq.collect (fun f -> vm |> (f >> List.toSeq))
+        in 
+        build_namespace_with_members members vm
 

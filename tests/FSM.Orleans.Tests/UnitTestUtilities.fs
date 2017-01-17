@@ -41,11 +41,26 @@ module UnitTestUtilities =
             |> String.concat("\n")
         text_matches (expected, actual)
 
-    let test_codegen_interface t generator expected = 
+    let test_codegen_namespace_member t generator expected = 
         let actual = 
             ``compilation unit``
                 [
-                    t |> to_namespace_builder_internal [ generator ]
+                    t |> build_namespace_with_member_generators [ generator ]
+                ]
+            |> generateCodeToString
+        in
+        do printf "Expected: %s" expected
+        do printf "Actual: %s" actual
+        text_matches (expected, actual)
+
+    let test_codegen_implementation_member t generator expected = 
+        let implementation = 
+            t |> build_implementation_class_with_member_generators [generator]
+
+        let actual = 
+            ``compilation unit``
+                [
+                    t |> build_namespace_with_members implementation
                 ]
             |> generateCodeToString
         in
