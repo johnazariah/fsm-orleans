@@ -231,3 +231,20 @@ module CodeGenerationTests =
 
         test_codegen_implementation_member BankAccountFSM to_processor_map expected
         
+
+    [<Test>]
+    let ``code-gen-implementation: message endpoints``() =
+
+        let expected = @"namespace FSM.BankAccount.Orleans
+{
+    using System;
+
+    public partial class BankAccount : StateMachineGrain<BankAccountGrainState,BankAccountData,BankAccountState,BankAccountMessage>, IStateMachineGrain<BankAccountData, BankAccountMessage>
+    {
+        public async Task<BankAccountData> Deposit(Amount amount) => await ProcessMessage(BankAccountMessage.Deposit(amount));
+        public async Task<BankAccountData> Withdrawal(Amount amount) => await ProcessMessage(BankAccountMessage.Withdrawal(amount));
+        public async Task<BankAccountData> Close() => await ProcessMessage(BankAccountMessage.Close());
+    }
+}"
+
+        test_codegen_implementation_member BankAccountFSM to_message_endpoints expected
