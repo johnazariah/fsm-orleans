@@ -179,12 +179,70 @@ module GrainImplementationDeclarationBuilder =
                 ``}``
             :> MemberDeclarationSyntax
 
-        seq {
-            yield to_state_processor_method
-            yield to_message_handler_interface
-            yield to_message_handler_delegator
-        }
-        |> Seq.toList
+        let to_message_handler_implementation =
+            let toResultStateClassName = sprintf "%s%sResultState" state_name             
+            let toResultClassName = sprintf "%s%sResult" state_name 
+            
+            let toResultStateClass (name, targets) =
+                {
+                    UnionTypeName = UnionTypeName (name |> toResultStateClassName)
+                    UnionTypeParameters = []
+                    UnionMembers = targets |> List.map (sprintf "%sState" >> (fun s -> (UnionMemberName s, None)) >> UnionMember.apply)
+                    BaseType = FullTypeName.apply((sm.state_typename, []), None) |> Some
+                }
+                |> to_class_declaration
+
+            let toResultClass (name, _) =
+                let className = name |> toResultClassName
+                let transitionResultState = name |> toResultStateClassName
+                let baseClassName = 
+                    sprintf "StateMachineGrainState<%s, %s>.StateTransitionResult<%s>" sm.data_typename sm.state_typename transitionResultState 
+                    |> Some
+                in
+                let ctor = 
+                    ``constructor`` className 
+                        ``(`` [("stateMachineData", ``type`` sm.data_typename); ("stateMachineState", ``type`` transitionResultState)]``)``
+                        ``:`` ["stateMachineData"; "stateMachineState"]
+                        [``public``]
+                        ``{`` [] ``}``
+                    :> MemberDeclarationSyntax
+
+                let explicitCastToBase =
+                    let castExpr = sprintf "(%s)result.StateMachineState" sm.state_typename
+                    in
+                    ``explicit operator`` sm.grain_state_typename ``(`` (``type`` className) ``)``
+                        (``=>`` (``new`` (``type`` sm.grain_state_typename) ``(`` [ident "result.StateMachineData"; ident castExpr] ``)``))
+                in
+                ``class`` className ``<<`` [] ``>>``
+                    ``:`` baseClassName ``,`` []
+                    [``public``]
+                    ``{``
+                        [
+                            ctor
+                            explicitCastToBase
+                        ] 
+                    ``}``
+                :> MemberDeclarationSyntax
+
+            let members = seq {
+                    yield! (sd.StateTransitions |> Seq.map (fun st -> toResultStateClass st.unapply))
+                    yield! (sd.StateTransitions |> Seq.map (fun st -> toResultClass st.unapply))
+                }
+            in
+            ``class`` className ``<<`` [] ``>>``
+                ``:`` None ``,`` [ interfaceName]
+                [``private``; ``partial``]
+                ``{``
+                    members 
+                ``}``
+            :> MemberDeclarationSyntax
+        in
+        [
+            to_state_processor_method
+            to_message_handler_interface
+            to_message_handler_delegator
+            to_message_handler_implementation
+        ]
 
     let to_state_processors vm = 
         vm.StateDefinitions |> List.collect (to_state_processor vm)

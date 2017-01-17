@@ -283,6 +283,10 @@ module CodeGenerationTests =
             private static readonly IClosedStateMessageHandler _handler = new ClosedStateMessageHandler();
         }
 
+        private partial class ClosedStateMessageHandler : IClosedStateMessageHandler
+        {
+        }
+
         private static async Task<BankAccountGrainState> OverdrawnStateProcessor(BankAccountGrainState state, BankAccountMessage message) => await message.Match(OverdrawnStateMessageDelegator.HandleOverdrawnStateDepositMessage(state), HandleInvalidMessage, HandleInvalidMessage);
         private interface IOverdrawnStateMessageHandler
         {
@@ -293,6 +297,77 @@ module CodeGenerationTests =
         {
             private static readonly IOverdrawnStateMessageHandler _handler = new OverdrawnStateMessageHandler();
             public static Func<Amount,Task<BankAccountGrainState>> HandleOverdrawnStateDepositMessage(BankAccountGrainState state) => (state, amount) => _handler.Deposit(state, amount).ContinueWith(result => (BankAccountGrainState)(result.Result));
+        }
+
+        private partial class OverdrawnStateMessageHandler : IOverdrawnStateMessageHandler
+        {
+            public abstract partial class OverdrawnDepositResultState : IEquatable<OverdrawnDepositResultState>, IStructuralEquatable
+            {
+                private readonly BankAccountState _base;
+                private OverdrawnDepositResultState(BankAccountState value)
+                {
+                    _base = value;
+                }
+
+                public abstract TResult Match<TResult>(Func<TResult> activeStateFunc, Func<TResult> overdrawnStateFunc, Func<TResult> zeroBalanceStateFunc);
+                public static readonly OverdrawnDepositResultState ActiveState = new ChoiceTypes.ActiveState();
+                public static readonly OverdrawnDepositResultState OverdrawnState = new ChoiceTypes.OverdrawnState();
+                public static readonly OverdrawnDepositResultState ZeroBalanceState = new ChoiceTypes.ZeroBalanceState();
+                private static partial class ChoiceTypes
+                {
+                    public partial class ActiveState : OverdrawnDepositResultState
+                    {
+                        public ActiveState() : base(BankAccountState.ActiveState)
+                        {
+                        }
+
+                        public override TResult Match<TResult>(Func<TResult> activeStateFunc, Func<TResult> overdrawnStateFunc, Func<TResult> zeroBalanceStateFunc) => activeStateFunc();
+                        public override bool Equals(object other) => other is ActiveState;
+                        public override int GetHashCode() => GetType().FullName.GetHashCode();
+                        public override string ToString() => ""ActiveState"";
+                    }
+
+                    public partial class OverdrawnState : OverdrawnDepositResultState
+                    {
+                        public OverdrawnState() : base(BankAccountState.OverdrawnState)
+                        {
+                        }
+
+                        public override TResult Match<TResult>(Func<TResult> activeStateFunc, Func<TResult> overdrawnStateFunc, Func<TResult> zeroBalanceStateFunc) => overdrawnStateFunc();
+                        public override bool Equals(object other) => other is OverdrawnState;
+                        public override int GetHashCode() => GetType().FullName.GetHashCode();
+                        public override string ToString() => ""OverdrawnState"";
+                    }
+
+                    public partial class ZeroBalanceState : OverdrawnDepositResultState
+                    {
+                        public ZeroBalanceState() : base(BankAccountState.ZeroBalanceState)
+                        {
+                        }
+
+                        public override TResult Match<TResult>(Func<TResult> activeStateFunc, Func<TResult> overdrawnStateFunc, Func<TResult> zeroBalanceStateFunc) => zeroBalanceStateFunc();
+                        public override bool Equals(object other) => other is ZeroBalanceState;
+                        public override int GetHashCode() => GetType().FullName.GetHashCode();
+                        public override string ToString() => ""ZeroBalanceState"";
+                    }
+                }
+
+                public bool Equals(OverdrawnDepositResultState other) => Equals(other as object);
+                public bool Equals(object other, IEqualityComparer comparer) => Equals(other);
+                public int GetHashCode(IEqualityComparer comparer) => GetHashCode();
+                public static bool operator ==(OverdrawnDepositResultState left, OverdrawnDepositResultState right) => left?.Equals(right) ?? false;
+                public static bool operator !=(OverdrawnDepositResultState left, OverdrawnDepositResultState right) => !(left == right);
+                public static explicit operator BankAccountState(OverdrawnDepositResultState value) => value._base;
+            }
+
+            public class OverdrawnDepositResult : StateMachineGrainState<BankAccountData, BankAccountState>.StateTransitionResult<OverdrawnDepositResultState>
+            {
+                public OverdrawnDepositResult(BankAccountData stateMachineData, OverdrawnDepositResultState stateMachineState) : base(stateMachineData, stateMachineState)
+                {
+                }
+
+                public static explicit operator BankAccountGrainState(OverdrawnDepositResult value) => new BankAccountGrainState(result.StateMachineData, (BankAccountState)result.StateMachineState);
+            }
         }
 
         private static async Task<BankAccountGrainState> ActiveStateProcessor(BankAccountGrainState state, BankAccountMessage message) => await message.Match(ActiveStateMessageDelegator.HandleActiveStateDepositMessage(state), ActiveStateMessageDelegator.HandleActiveStateWithdrawalMessage(state), HandleInvalidMessage);
@@ -309,6 +384,119 @@ module CodeGenerationTests =
             public static Func<Amount,Task<BankAccountGrainState>> HandleActiveStateWithdrawalMessage(BankAccountGrainState state) => (state, amount) => _handler.Withdrawal(state, amount).ContinueWith(result => (BankAccountGrainState)(result.Result));
         }
 
+        private partial class ActiveStateMessageHandler : IActiveStateMessageHandler
+        {
+            public abstract partial class ActiveDepositResultState : IEquatable<ActiveDepositResultState>, IStructuralEquatable
+            {
+                private readonly BankAccountState _base;
+                private ActiveDepositResultState(BankAccountState value)
+                {
+                    _base = value;
+                }
+
+                public abstract TResult Match<TResult>(Func<TResult> activeStateFunc);
+                public static readonly ActiveDepositResultState ActiveState = new ChoiceTypes.ActiveState();
+                private static partial class ChoiceTypes
+                {
+                    public partial class ActiveState : ActiveDepositResultState
+                    {
+                        public ActiveState() : base(BankAccountState.ActiveState)
+                        {
+                        }
+
+                        public override TResult Match<TResult>(Func<TResult> activeStateFunc) => activeStateFunc();
+                        public override bool Equals(object other) => other is ActiveState;
+                        public override int GetHashCode() => GetType().FullName.GetHashCode();
+                        public override string ToString() => ""ActiveState"";
+                    }
+                }
+
+                public bool Equals(ActiveDepositResultState other) => Equals(other as object);
+                public bool Equals(object other, IEqualityComparer comparer) => Equals(other);
+                public int GetHashCode(IEqualityComparer comparer) => GetHashCode();
+                public static bool operator ==(ActiveDepositResultState left, ActiveDepositResultState right) => left?.Equals(right) ?? false;
+                public static bool operator !=(ActiveDepositResultState left, ActiveDepositResultState right) => !(left == right);
+                public static explicit operator BankAccountState(ActiveDepositResultState value) => value._base;
+            }
+
+            public abstract partial class ActiveWithdrawalResultState : IEquatable<ActiveWithdrawalResultState>, IStructuralEquatable
+            {
+                private readonly BankAccountState _base;
+                private ActiveWithdrawalResultState(BankAccountState value)
+                {
+                    _base = value;
+                }
+
+                public abstract TResult Match<TResult>(Func<TResult> activeStateFunc, Func<TResult> overdrawnStateFunc, Func<TResult> zeroBalanceStateFunc);
+                public static readonly ActiveWithdrawalResultState ActiveState = new ChoiceTypes.ActiveState();
+                public static readonly ActiveWithdrawalResultState OverdrawnState = new ChoiceTypes.OverdrawnState();
+                public static readonly ActiveWithdrawalResultState ZeroBalanceState = new ChoiceTypes.ZeroBalanceState();
+                private static partial class ChoiceTypes
+                {
+                    public partial class ActiveState : ActiveWithdrawalResultState
+                    {
+                        public ActiveState() : base(BankAccountState.ActiveState)
+                        {
+                        }
+
+                        public override TResult Match<TResult>(Func<TResult> activeStateFunc, Func<TResult> overdrawnStateFunc, Func<TResult> zeroBalanceStateFunc) => activeStateFunc();
+                        public override bool Equals(object other) => other is ActiveState;
+                        public override int GetHashCode() => GetType().FullName.GetHashCode();
+                        public override string ToString() => ""ActiveState"";
+                    }
+
+                    public partial class OverdrawnState : ActiveWithdrawalResultState
+                    {
+                        public OverdrawnState() : base(BankAccountState.OverdrawnState)
+                        {
+                        }
+
+                        public override TResult Match<TResult>(Func<TResult> activeStateFunc, Func<TResult> overdrawnStateFunc, Func<TResult> zeroBalanceStateFunc) => overdrawnStateFunc();
+                        public override bool Equals(object other) => other is OverdrawnState;
+                        public override int GetHashCode() => GetType().FullName.GetHashCode();
+                        public override string ToString() => ""OverdrawnState"";
+                    }
+
+                    public partial class ZeroBalanceState : ActiveWithdrawalResultState
+                    {
+                        public ZeroBalanceState() : base(BankAccountState.ZeroBalanceState)
+                        {
+                        }
+
+                        public override TResult Match<TResult>(Func<TResult> activeStateFunc, Func<TResult> overdrawnStateFunc, Func<TResult> zeroBalanceStateFunc) => zeroBalanceStateFunc();
+                        public override bool Equals(object other) => other is ZeroBalanceState;
+                        public override int GetHashCode() => GetType().FullName.GetHashCode();
+                        public override string ToString() => ""ZeroBalanceState"";
+                    }
+                }
+
+                public bool Equals(ActiveWithdrawalResultState other) => Equals(other as object);
+                public bool Equals(object other, IEqualityComparer comparer) => Equals(other);
+                public int GetHashCode(IEqualityComparer comparer) => GetHashCode();
+                public static bool operator ==(ActiveWithdrawalResultState left, ActiveWithdrawalResultState right) => left?.Equals(right) ?? false;
+                public static bool operator !=(ActiveWithdrawalResultState left, ActiveWithdrawalResultState right) => !(left == right);
+                public static explicit operator BankAccountState(ActiveWithdrawalResultState value) => value._base;
+            }
+
+            public class ActiveDepositResult : StateMachineGrainState<BankAccountData, BankAccountState>.StateTransitionResult<ActiveDepositResultState>
+            {
+                public ActiveDepositResult(BankAccountData stateMachineData, ActiveDepositResultState stateMachineState) : base(stateMachineData, stateMachineState)
+                {
+                }
+
+                public static explicit operator BankAccountGrainState(ActiveDepositResult value) => new BankAccountGrainState(result.StateMachineData, (BankAccountState)result.StateMachineState);
+            }
+
+            public class ActiveWithdrawalResult : StateMachineGrainState<BankAccountData, BankAccountState>.StateTransitionResult<ActiveWithdrawalResultState>
+            {
+                public ActiveWithdrawalResult(BankAccountData stateMachineData, ActiveWithdrawalResultState stateMachineState) : base(stateMachineData, stateMachineState)
+                {
+                }
+
+                public static explicit operator BankAccountGrainState(ActiveWithdrawalResult value) => new BankAccountGrainState(result.StateMachineData, (BankAccountState)result.StateMachineState);
+            }
+        }
+
         private static async Task<BankAccountGrainState> ZeroBalanceStateProcessor(BankAccountGrainState state, BankAccountMessage message) => await message.Match(ZeroBalanceStateMessageDelegator.HandleZeroBalanceStateDepositMessage(state), HandleInvalidMessage, ZeroBalanceStateMessageDelegator.HandleZeroBalanceStateCloseMessage(state));
         private interface IZeroBalanceStateMessageHandler
         {
@@ -321,6 +509,93 @@ module CodeGenerationTests =
             private static readonly IZeroBalanceStateMessageHandler _handler = new ZeroBalanceStateMessageHandler();
             public static Func<Amount,Task<BankAccountGrainState>> HandleZeroBalanceStateDepositMessage(BankAccountGrainState state) => (state, amount) => _handler.Deposit(state, amount).ContinueWith(result => (BankAccountGrainState)(result.Result));
             public static Func<Task<BankAccountGrainState>> HandleZeroBalanceStateCloseMessage(BankAccountGrainState state) => (state) => _handler.Close(state).ContinueWith(result => (BankAccountGrainState)(result.Result));
+        }
+
+        private partial class ZeroBalanceStateMessageHandler : IZeroBalanceStateMessageHandler
+        {
+            public abstract partial class ZeroBalanceDepositResultState : IEquatable<ZeroBalanceDepositResultState>, IStructuralEquatable
+            {
+                private readonly BankAccountState _base;
+                private ZeroBalanceDepositResultState(BankAccountState value)
+                {
+                    _base = value;
+                }
+
+                public abstract TResult Match<TResult>(Func<TResult> activeStateFunc);
+                public static readonly ZeroBalanceDepositResultState ActiveState = new ChoiceTypes.ActiveState();
+                private static partial class ChoiceTypes
+                {
+                    public partial class ActiveState : ZeroBalanceDepositResultState
+                    {
+                        public ActiveState() : base(BankAccountState.ActiveState)
+                        {
+                        }
+
+                        public override TResult Match<TResult>(Func<TResult> activeStateFunc) => activeStateFunc();
+                        public override bool Equals(object other) => other is ActiveState;
+                        public override int GetHashCode() => GetType().FullName.GetHashCode();
+                        public override string ToString() => ""ActiveState"";
+                    }
+                }
+
+                public bool Equals(ZeroBalanceDepositResultState other) => Equals(other as object);
+                public bool Equals(object other, IEqualityComparer comparer) => Equals(other);
+                public int GetHashCode(IEqualityComparer comparer) => GetHashCode();
+                public static bool operator ==(ZeroBalanceDepositResultState left, ZeroBalanceDepositResultState right) => left?.Equals(right) ?? false;
+                public static bool operator !=(ZeroBalanceDepositResultState left, ZeroBalanceDepositResultState right) => !(left == right);
+                public static explicit operator BankAccountState(ZeroBalanceDepositResultState value) => value._base;
+            }
+
+            public abstract partial class ZeroBalanceCloseResultState : IEquatable<ZeroBalanceCloseResultState>, IStructuralEquatable
+            {
+                private readonly BankAccountState _base;
+                private ZeroBalanceCloseResultState(BankAccountState value)
+                {
+                    _base = value;
+                }
+
+                public abstract TResult Match<TResult>(Func<TResult> closedStateFunc);
+                public static readonly ZeroBalanceCloseResultState ClosedState = new ChoiceTypes.ClosedState();
+                private static partial class ChoiceTypes
+                {
+                    public partial class ClosedState : ZeroBalanceCloseResultState
+                    {
+                        public ClosedState() : base(BankAccountState.ClosedState)
+                        {
+                        }
+
+                        public override TResult Match<TResult>(Func<TResult> closedStateFunc) => closedStateFunc();
+                        public override bool Equals(object other) => other is ClosedState;
+                        public override int GetHashCode() => GetType().FullName.GetHashCode();
+                        public override string ToString() => ""ClosedState"";
+                    }
+                }
+
+                public bool Equals(ZeroBalanceCloseResultState other) => Equals(other as object);
+                public bool Equals(object other, IEqualityComparer comparer) => Equals(other);
+                public int GetHashCode(IEqualityComparer comparer) => GetHashCode();
+                public static bool operator ==(ZeroBalanceCloseResultState left, ZeroBalanceCloseResultState right) => left?.Equals(right) ?? false;
+                public static bool operator !=(ZeroBalanceCloseResultState left, ZeroBalanceCloseResultState right) => !(left == right);
+                public static explicit operator BankAccountState(ZeroBalanceCloseResultState value) => value._base;
+            }
+
+            public class ZeroBalanceDepositResult : StateMachineGrainState<BankAccountData, BankAccountState>.StateTransitionResult<ZeroBalanceDepositResultState>
+            {
+                public ZeroBalanceDepositResult(BankAccountData stateMachineData, ZeroBalanceDepositResultState stateMachineState) : base(stateMachineData, stateMachineState)
+                {
+                }
+
+                public static explicit operator BankAccountGrainState(ZeroBalanceDepositResult value) => new BankAccountGrainState(result.StateMachineData, (BankAccountState)result.StateMachineState);
+            }
+
+            public class ZeroBalanceCloseResult : StateMachineGrainState<BankAccountData, BankAccountState>.StateTransitionResult<ZeroBalanceCloseResultState>
+            {
+                public ZeroBalanceCloseResult(BankAccountData stateMachineData, ZeroBalanceCloseResultState stateMachineState) : base(stateMachineData, stateMachineState)
+                {
+                }
+
+                public static explicit operator BankAccountGrainState(ZeroBalanceCloseResult value) => new BankAccountGrainState(result.StateMachineData, (BankAccountState)result.StateMachineState);
+            }
         }
     }
 }"
