@@ -9,7 +9,7 @@ module TestInput =
     {
 	    identifier BankAccountId of Guid
 
-	    data Balance of Balance	    
+	    data Balance of Amount	    
 
 	    messages
 	    {

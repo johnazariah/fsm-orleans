@@ -45,23 +45,23 @@ module CodeGenerationTests =
         {
         }
 
-        public abstract TResult Match<TResult>(Func<Balance, TResult> balanceFunc);
-        public static BankAccountData Balance(Balance value) => new ChoiceTypes.Balance(value);
+        public abstract TResult Match<TResult>(Func<Amount, TResult> balanceFunc);
+        public static BankAccountData Balance(Amount value) => new ChoiceTypes.Balance(value);
         private static partial class ChoiceTypes
         {
             public partial class Balance : BankAccountData
             {
-                public Balance(Balance value)
+                public Balance(Amount value)
                 {
                     Value = value;
                 }
 
-                private Balance Value
+                private Amount Value
                 {
                     get;
                 }
 
-                public override TResult Match<TResult>(Func<Balance, TResult> balanceFunc) => balanceFunc(Value);
+                public override TResult Match<TResult>(Func<Amount, TResult> balanceFunc) => balanceFunc(Value);
                 public override bool Equals(object other) => other is Balance && Value.Equals(((Balance)other).Value);
                 public override int GetHashCode() => GetType().FullName.GetHashCode() ^ (Value?.GetHashCode() ?? ""null"".GetHashCode());
                 public override string ToString() => String.Format(""Balance {0}"", Value);
