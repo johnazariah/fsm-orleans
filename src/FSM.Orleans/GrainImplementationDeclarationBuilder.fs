@@ -71,6 +71,39 @@ module GrainImplementationDeclarationBuilder =
         in 
         vm.MessageBlock.Messages |> List.map to_message_endpoint
 
+    let to_state_processor vm sd = 
+        let sm = StateMachine vm
+
+        let to_state_processor_method = 
+            let state_name = sd.StateName.unapply
+            let delegatorClassName = state_name |> sprintf "%sStateMessageDelegator"
+            let dispatchLambda messageName =
+                if sd.StateTransitions |> Seq.map (fun st -> (st.unapply |> fst)) |> Seq.contains (messageName) then
+                    let delegateMethodName = sprintf "Handle%sState%sMessage" state_name messageName
+                    let delegateMethodArgs = [ident "state"]
+                    ``invoke`` ((ident delegatorClassName) <|.|> delegateMethodName) ``(`` delegateMethodArgs ``)`` 
+                else
+                    ident "HandleInvalidMessage" :> ExpressionSyntax
+
+            let methodType = sprintf "Task<%s>" sm.grain_state_typename
+            let methodName = sprintf "%sStateProcessor" state_name
+            let args = [ ("state", ``type`` sm.grain_state_typename); ("message", ``type`` sm.message_typename) ]
+            let dispatchArgs = vm.MessageBlock.Messages |> Seq.map (fun msg -> msg.MessageName.unapply |> dispatchLambda)
+            in
+            ``arrow_method`` methodType methodName ``<<`` [] ``>>``
+                ``(`` args ``)``
+                [``private``; ``static``; ``async``]
+                (Some (``=>`` (``await`` (``invoke`` (ident "message.Match") ``(`` dispatchArgs ``)``))))
+            :> MemberDeclarationSyntax
+
+        seq {
+            yield to_state_processor_method
+        }
+        |> Seq.toList
+
+    let to_state_processors vm = 
+        vm.StateDefinitions |> List.collect (to_state_processor vm)
+
 
     let build_implementation_class_with_member_generators fns vm = 
         let sm = StateMachine vm

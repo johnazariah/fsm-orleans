@@ -247,7 +247,6 @@ module CodeGenerationTests =
 
         test_codegen_implementation_member BankAccountFSM to_processor_map expected
         
-
     [<Test>]
     let ``code-gen-implementation: message endpoints``() =
 
@@ -264,3 +263,21 @@ module CodeGenerationTests =
 }"
 
         test_codegen_implementation_member BankAccountFSM to_message_endpoints expected
+
+    [<Test>]
+    let ``code-gen-implementation: state processors``() =
+
+        let expected = @"namespace FSM.BankAccount.Orleans
+{
+    using System;
+
+    public partial class BankAccount : StateMachineGrain<BankAccountGrainState,BankAccountData,BankAccountState,BankAccountMessage>, IStateMachineGrain<BankAccountData, BankAccountMessage>
+    {
+        private static async Task<BankAccountGrainState> ClosedStateProcessor(BankAccountGrainState state, BankAccountMessage message) => await message.Match(HandleInvalidMessage, HandleInvalidMessage, HandleInvalidMessage);
+        private static async Task<BankAccountGrainState> OverdrawnStateProcessor(BankAccountGrainState state, BankAccountMessage message) => await message.Match(OverdrawnStateMessageDelegator.HandleOverdrawnStateDepositMessage(state), HandleInvalidMessage, HandleInvalidMessage);
+        private static async Task<BankAccountGrainState> ActiveStateProcessor(BankAccountGrainState state, BankAccountMessage message) => await message.Match(ActiveStateMessageDelegator.HandleActiveStateDepositMessage(state), ActiveStateMessageDelegator.HandleActiveStateWithdrawalMessage(state), HandleInvalidMessage);
+        private static async Task<BankAccountGrainState> ZeroBalanceStateProcessor(BankAccountGrainState state, BankAccountMessage message) => await message.Match(ZeroBalanceStateMessageDelegator.HandleZeroBalanceStateDepositMessage(state), HandleInvalidMessage, ZeroBalanceStateMessageDelegator.HandleZeroBalanceStateCloseMessage(state));
+    }
+}"
+
+        test_codegen_implementation_member BankAccountFSM to_state_processors expected
