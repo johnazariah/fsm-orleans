@@ -217,6 +217,22 @@ module CodeGenerationTests =
 
 
     [<Test>]
+    let ``code-gen: grain state class``() =
+
+        let expected = @"namespace FSM.BankAccount.Orleans
+{
+    using System;
+
+    public class BankAccountGrainState : StateMachineGrainState<BankAccountData, BankAccountState>
+    {
+        public BankAccount(BankAccountData stateMachineData, BankAccountState stateMachineState) : base(stateMachineData, stateMachineState)
+        {
+        }
+    }
+}"
+        test_codegen_namespace_member BankAccountFSM build_grain_state expected
+
+    [<Test>]
     let ``code-gen-implementation: processor map``() =
 
         let expected = @"namespace FSM.BankAccount.Orleans
