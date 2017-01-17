@@ -20,7 +20,10 @@ module CodeGenerationTests =
 
         let expected = @"namespace FSM.BankAccount.Orleans
 {
+    using FSM.Orleans;
     using System;
+    using System.Collections;
+    using System.Threading.Tasks;
 
     public interface IBankAccount : IStateMachineGrain<BankAccountData, BankAccountMessage>
     {
@@ -37,7 +40,10 @@ module CodeGenerationTests =
 
         let expected = @"namespace FSM.BankAccount.Orleans
 {
+    using FSM.Orleans;
     using System;
+    using System.Collections;
+    using System.Threading.Tasks;
 
     public abstract partial class BankAccountData : IEquatable<BankAccountData>, IStructuralEquatable
     {
@@ -83,7 +89,10 @@ module CodeGenerationTests =
 
         let expected = @"namespace FSM.BankAccount.Orleans
 {
+    using FSM.Orleans;
     using System;
+    using System.Collections;
+    using System.Threading.Tasks;
 
     public abstract partial class BankAccountState : IEquatable<BankAccountState>, IStructuralEquatable
     {
@@ -146,7 +155,10 @@ module CodeGenerationTests =
 
         let expected = @"namespace FSM.BankAccount.Orleans
 {
+    using FSM.Orleans;
     using System;
+    using System.Collections;
+    using System.Threading.Tasks;
 
     public abstract partial class BankAccountMessage : IEquatable<BankAccountMessage>, IStructuralEquatable
     {
@@ -221,7 +233,10 @@ module CodeGenerationTests =
 
         let expected = @"namespace FSM.BankAccount.Orleans
 {
+    using FSM.Orleans;
     using System;
+    using System.Collections;
+    using System.Threading.Tasks;
 
     public class BankAccountGrainState : StateMachineGrainState<BankAccountData, BankAccountState>
     {
@@ -237,7 +252,10 @@ module CodeGenerationTests =
 
         let expected = @"namespace FSM.BankAccount.Orleans
 {
+    using FSM.Orleans;
     using System;
+    using System.Collections;
+    using System.Threading.Tasks;
 
     public partial class BankAccount : StateMachineGrain<BankAccountGrainState,BankAccountData,BankAccountState,BankAccountMessage>, IStateMachineGrain<BankAccountData, BankAccountMessage>
     {
@@ -252,7 +270,10 @@ module CodeGenerationTests =
 
         let expected = @"namespace FSM.BankAccount.Orleans
 {
+    using FSM.Orleans;
     using System;
+    using System.Collections;
+    using System.Threading.Tasks;
 
     public partial class BankAccount : StateMachineGrain<BankAccountGrainState,BankAccountData,BankAccountState,BankAccountMessage>, IStateMachineGrain<BankAccountData, BankAccountMessage>
     {
@@ -269,7 +290,10 @@ module CodeGenerationTests =
 
         let expected = @"namespace FSM.BankAccount.Orleans
 {
+    using FSM.Orleans;
     using System;
+    using System.Collections;
+    using System.Threading.Tasks;
 
     public partial class BankAccount : StateMachineGrain<BankAccountGrainState,BankAccountData,BankAccountState,BankAccountMessage>, IStateMachineGrain<BankAccountData, BankAccountMessage>
     {
