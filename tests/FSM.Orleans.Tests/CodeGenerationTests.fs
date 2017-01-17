@@ -278,10 +278,21 @@ module CodeGenerationTests =
         {
         }
 
+        private static class ClosedStateMessageDelegator
+        {
+            private static readonly IClosedStateMessageHandler _handler = new ClosedStateMessageHandler();
+        }
+
         private static async Task<BankAccountGrainState> OverdrawnStateProcessor(BankAccountGrainState state, BankAccountMessage message) => await message.Match(OverdrawnStateMessageDelegator.HandleOverdrawnStateDepositMessage(state), HandleInvalidMessage, HandleInvalidMessage);
         private interface IOverdrawnStateMessageHandler
         {
             Task<OverdrawnStateMessageHandler.OverdrawnDepositResult> Deposit(BankAccountGrainState state, Amount amount);
+        }
+
+        private static class OverdrawnStateMessageDelegator
+        {
+            private static readonly IOverdrawnStateMessageHandler _handler = new OverdrawnStateMessageHandler();
+            public static Func<Amount,Task<BankAccountGrainState>> HandleOverdrawnStateDepositMessage(BankAccountGrainState state) => (state, amount) => _handler.Deposit(state, amount).ContinueWith(result => (BankAccountGrainState)(result.Result));
         }
 
         private static async Task<BankAccountGrainState> ActiveStateProcessor(BankAccountGrainState state, BankAccountMessage message) => await message.Match(ActiveStateMessageDelegator.HandleActiveStateDepositMessage(state), ActiveStateMessageDelegator.HandleActiveStateWithdrawalMessage(state), HandleInvalidMessage);
@@ -291,11 +302,25 @@ module CodeGenerationTests =
             Task<ActiveStateMessageHandler.ActiveWithdrawalResult> Withdrawal(BankAccountGrainState state, Amount amount);
         }
 
+        private static class ActiveStateMessageDelegator
+        {
+            private static readonly IActiveStateMessageHandler _handler = new ActiveStateMessageHandler();
+            public static Func<Amount,Task<BankAccountGrainState>> HandleActiveStateDepositMessage(BankAccountGrainState state) => (state, amount) => _handler.Deposit(state, amount).ContinueWith(result => (BankAccountGrainState)(result.Result));
+            public static Func<Amount,Task<BankAccountGrainState>> HandleActiveStateWithdrawalMessage(BankAccountGrainState state) => (state, amount) => _handler.Withdrawal(state, amount).ContinueWith(result => (BankAccountGrainState)(result.Result));
+        }
+
         private static async Task<BankAccountGrainState> ZeroBalanceStateProcessor(BankAccountGrainState state, BankAccountMessage message) => await message.Match(ZeroBalanceStateMessageDelegator.HandleZeroBalanceStateDepositMessage(state), HandleInvalidMessage, ZeroBalanceStateMessageDelegator.HandleZeroBalanceStateCloseMessage(state));
         private interface IZeroBalanceStateMessageHandler
         {
             Task<ZeroBalanceStateMessageHandler.ZeroBalanceDepositResult> Deposit(BankAccountGrainState state, Amount amount);
             Task<ZeroBalanceStateMessageHandler.ZeroBalanceCloseResult> Close(BankAccountGrainState state);
+        }
+
+        private static class ZeroBalanceStateMessageDelegator
+        {
+            private static readonly IZeroBalanceStateMessageHandler _handler = new ZeroBalanceStateMessageHandler();
+            public static Func<Amount,Task<BankAccountGrainState>> HandleZeroBalanceStateDepositMessage(BankAccountGrainState state) => (state, amount) => _handler.Deposit(state, amount).ContinueWith(result => (BankAccountGrainState)(result.Result));
+            public static Func<Task<BankAccountGrainState>> HandleZeroBalanceStateCloseMessage(BankAccountGrainState state) => (state) => _handler.Close(state).ContinueWith(result => (BankAccountGrainState)(result.Result));
         }
     }
 }"

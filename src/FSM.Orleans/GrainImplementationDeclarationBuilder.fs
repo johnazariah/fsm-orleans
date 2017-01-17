@@ -75,6 +75,8 @@ module GrainImplementationDeclarationBuilder =
         let sm = StateMachine vm        
         let state_name = sd.StateName.unapply
         let interfaceName  = sprintf "I%sStateMessageHandler" state_name
+        let className = sprintf "%sStateMessageHandler" state_name
+        let delegatorClassName = sprintf "%sStateMessageDelegator" state_name
 
         let to_state_processor_method = 
             let delegatorClassName = state_name |> sprintf "%sStateMessageDelegator"
@@ -128,10 +130,59 @@ module GrainImplementationDeclarationBuilder =
                 ``}``
             :> MemberDeclarationSyntax
 
+        let to_message_handler_delegator = 
+            let handlerField = 
+                ``field`` interfaceName "_handler" [``private``; ``static``; ``readonly``] 
+                    (Some (``:=`` (``new`` (``type`` className) ``(`` [] ``)``)))
+                :> MemberDeclarationSyntax
+            
+            let toDispatchLambda (messageName, argTypeMaybe) =
+                let parameterList = 
+                    argTypeMaybe 
+                    |> Option.map toParameterName
+                    |> Option.fold (fun s a -> s @ [ a ]) [ "state" ]
+
+                let handlerMethod = 
+                    ``invoke`` ((ident "_handler") <|.|> messageName)  ``(`` (parameterList |> List.map ident) ``)``
+
+                let handlerWithCast = 
+                    let castMethod = 
+                        ``_ =>`` "result" (``cast`` sm.grain_state_typename (``((`` ((ident "result") <|.|> "Result") ``))``))
+                    ``invoke`` (handlerMethod <|.|> "ContinueWith") ``(`` [ castMethod ] ``)``
+
+                let lambda = 
+                    ``=>`` (``() =>`` parameterList handlerWithCast)
+
+                let lambdaType = System.String.Join("," , (argTypeMaybe ?+ [ (sprintf "Task<%s>" sm.grain_state_typename) ])) |> sprintf "Func<%s>"
+                let methodName = sprintf "Handle%sState%sMessage" state_name messageName
+                in 
+                ``arrow_method`` lambdaType methodName ``<<`` [] ``>>`` 
+                    ``(`` [ ("state", ``type`` sm.grain_state_typename) ] ``)`` 
+                    [``public``; ``static``]  
+                    (Some lambda)
+                :> MemberDeclarationSyntax   
+
+            let dispatcher (messageName, argTypeMaybe) = 
+                if sd.StateTransitions |> Seq.map (fun st -> (st.unapply |> fst)) |> Seq.contains (messageName) then
+                    (messageName, argTypeMaybe) |> toDispatchLambda |> Some                               
+                else
+                    None
+            let members = seq {
+                    yield handlerField
+                    yield! vm.MessageBlock.Messages |> Seq.map (fun msg -> msg.unapply |> dispatcher) |> Seq.choose id
+                } 
+            ``class`` delegatorClassName ``<<`` [] ``>>``                
+                ``:`` None ``,`` []
+                [``private``; ``static``]
+                ``{``
+                    members
+                ``}``
+            :> MemberDeclarationSyntax
 
         seq {
             yield to_state_processor_method
             yield to_message_handler_interface
+            yield to_message_handler_delegator
         }
         |> Seq.toList
 
