@@ -274,9 +274,29 @@ module CodeGenerationTests =
     public partial class BankAccount : StateMachineGrain<BankAccountGrainState,BankAccountData,BankAccountState,BankAccountMessage>, IStateMachineGrain<BankAccountData, BankAccountMessage>
     {
         private static async Task<BankAccountGrainState> ClosedStateProcessor(BankAccountGrainState state, BankAccountMessage message) => await message.Match(HandleInvalidMessage, HandleInvalidMessage, HandleInvalidMessage);
+        private interface IClosedStateMessageHandler
+        {
+        }
+
         private static async Task<BankAccountGrainState> OverdrawnStateProcessor(BankAccountGrainState state, BankAccountMessage message) => await message.Match(OverdrawnStateMessageDelegator.HandleOverdrawnStateDepositMessage(state), HandleInvalidMessage, HandleInvalidMessage);
+        private interface IOverdrawnStateMessageHandler
+        {
+            Task<OverdrawnStateMessageHandler.OverdrawnDepositResult> Deposit(BankAccountGrainState state, Amount amount);
+        }
+
         private static async Task<BankAccountGrainState> ActiveStateProcessor(BankAccountGrainState state, BankAccountMessage message) => await message.Match(ActiveStateMessageDelegator.HandleActiveStateDepositMessage(state), ActiveStateMessageDelegator.HandleActiveStateWithdrawalMessage(state), HandleInvalidMessage);
+        private interface IActiveStateMessageHandler
+        {
+            Task<ActiveStateMessageHandler.ActiveDepositResult> Deposit(BankAccountGrainState state, Amount amount);
+            Task<ActiveStateMessageHandler.ActiveWithdrawalResult> Withdrawal(BankAccountGrainState state, Amount amount);
+        }
+
         private static async Task<BankAccountGrainState> ZeroBalanceStateProcessor(BankAccountGrainState state, BankAccountMessage message) => await message.Match(ZeroBalanceStateMessageDelegator.HandleZeroBalanceStateDepositMessage(state), HandleInvalidMessage, ZeroBalanceStateMessageDelegator.HandleZeroBalanceStateCloseMessage(state));
+        private interface IZeroBalanceStateMessageHandler
+        {
+            Task<ZeroBalanceStateMessageHandler.ZeroBalanceDepositResult> Deposit(BankAccountGrainState state, Amount amount);
+            Task<ZeroBalanceStateMessageHandler.ZeroBalanceCloseResult> Close(BankAccountGrainState state);
+        }
     }
 }"
 

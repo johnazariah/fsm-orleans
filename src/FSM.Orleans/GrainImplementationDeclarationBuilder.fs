@@ -72,10 +72,11 @@ module GrainImplementationDeclarationBuilder =
         vm.MessageBlock.Messages |> List.map to_message_endpoint
 
     let to_state_processor vm sd = 
-        let sm = StateMachine vm
+        let sm = StateMachine vm        
+        let state_name = sd.StateName.unapply
+        let interfaceName  = sprintf "I%sStateMessageHandler" state_name
 
         let to_state_processor_method = 
-            let state_name = sd.StateName.unapply
             let delegatorClassName = state_name |> sprintf "%sStateMessageDelegator"
             let dispatchLambda messageName =
                 if sd.StateTransitions |> Seq.map (fun st -> (st.unapply |> fst)) |> Seq.contains (messageName) then
@@ -96,14 +97,46 @@ module GrainImplementationDeclarationBuilder =
                 (Some (``=>`` (``await`` (``invoke`` (ident "message.Match") ``(`` dispatchArgs ``)``))))
             :> MemberDeclarationSyntax
 
+        let to_message_handler_interface = 
+            let toStateMessageHandler (name, _) =
+                let args = 
+                    vm.MessageBlock.Messages 
+                    |> Seq.filter (fun m -> m.MessageName.unapply = name) 
+                    |> Seq.map (fun m -> 
+                        m.MessageType 
+                        |> Option.map (fun m' -> (m'.unapply |> toParameterName, ``type`` m'.unapply)))
+                    |> Seq.choose id
+                    |> Seq.toList
+
+                let t = sprintf "Task<%sStateMessageHandler.%s%sResult>" state_name state_name name
+                in 
+                ``arrow_method`` t name ``<<`` [] ``>>``
+                    ``(`` (("state", ``type`` sm.grain_state_typename) :: args) ``)``
+                    []
+                    None
+                :> MemberDeclarationSyntax 
+
+            let members = seq {
+                    yield! (sd.StateTransitions |> Seq.map (fun st -> toStateMessageHandler st.unapply))
+                }
+            in 
+            ``interface`` interfaceName ``<<`` [] ``>>``
+                ``:`` []
+                [``private``]
+                ``{``
+                     members
+                ``}``
+            :> MemberDeclarationSyntax
+
+
         seq {
             yield to_state_processor_method
+            yield to_message_handler_interface
         }
         |> Seq.toList
 
     let to_state_processors vm = 
         vm.StateDefinitions |> List.collect (to_state_processor vm)
-
 
     let build_implementation_class_with_member_generators fns vm = 
         let sm = StateMachine vm
