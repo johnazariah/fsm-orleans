@@ -14,7 +14,7 @@ module NamespaceBuilder =
         in
         ``namespace`` sm.namespace_name
             ``{``
-                []
+                [ "System.Collections"; "System.Threading.Tasks"; "FSM.Orleans" ]
                 members
             ``}``
 

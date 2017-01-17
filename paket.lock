@@ -64,6 +64,10 @@ NUGET
     Microsoft.Composition (1.0.30) - redirects: force
     Microsoft.NETCore.Platforms (1.1) - framework: >= net45, dnxcore50, >= netstandard11, netstandard12, netstandard13, netstandard14
     Microsoft.NETCore.Targets (1.1) - framework: >= net45, dnxcore50, >= netstandard11, netstandard12, netstandard13, netstandard14
+    Microsoft.Orleans.Core (1.2.4)
+      Newtonsoft.Json (>= 7.0.1)
+    Microsoft.Orleans.OrleansCodeGenerator.Build (1.2.4)
+      Microsoft.Orleans.Core (>= 1.2.4)
     Microsoft.VisualStudio.Designer.Interfaces (1.1.4322)
     Microsoft.VisualStudio.Imaging (14.3.25407)
       Microsoft.VisualStudio.Utilities (>= 14.3.25407)
@@ -150,6 +154,7 @@ NUGET
       System.Runtime (>= 4.0) - framework: dnxcore50
       System.Threading.Tasks (>= 4.0) - framework: dnxcore50
     Microsoft.VSSDK.BuildTools (14.3.25420)
+    Newtonsoft.Json (8.0.3)
     runtime.debian.8-x64.runtime.native.System.Security.Cryptography.OpenSsl (4.3) - redirects: force, framework: net46, >= net46, >= netstandard13, netstandard14
     runtime.fedora.23-x64.runtime.native.System.Security.Cryptography.OpenSsl (4.3) - redirects: force, framework: net46, >= net46, >= netstandard13, netstandard14
     runtime.fedora.24-x64.runtime.native.System.Security.Cryptography.OpenSsl (4.3) - redirects: force, framework: net46, >= net46, >= netstandard13, netstandard14
