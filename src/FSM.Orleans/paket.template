@@ -1,6 +1,10 @@
-type project
-title
+type file
+
+id
     FSM.Orleans
+
+title
+    Strongly Typed State Machine for Microsoft Orleans
 owners
     John Azariah
 authors 
@@ -22,4 +26,6 @@ summary
 description
     A tool to parse and generate strongly-typed Orleans grains to implement state-machine-based applications
 
-
+files
+    ../../bin/FSM.Orleans/FSM.Orleans.dll ==> lib/net452
+    ../../bin/FSM.Orleans.Core/FSM.Orleans.Core.dll ==> lib/net452
