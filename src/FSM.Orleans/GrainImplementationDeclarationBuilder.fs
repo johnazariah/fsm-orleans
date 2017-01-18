@@ -203,10 +203,11 @@ module GrainImplementationDeclarationBuilder =
                         :> MemberDeclarationSyntax
 
                     let explicitCastToBase =
-                        let castExpr = sprintf "(%s)result.StateMachineState" sm.state_typename
+                        let dataArg = ident "value.StateMachineData" :> ExpressionSyntax
+                        let castStateArg = ``cast`` sm.state_typename (ident "value.StateMachineState") :> ExpressionSyntax
                         in
                         ``explicit operator`` sm.grain_state_typename ``(`` (``type`` className) ``)``
-                            (``=>`` (``new`` (``type`` sm.grain_state_typename) ``(`` [ident "result.StateMachineData"; ident castExpr] ``)``))
+                            (``=>`` (``new`` (``type`` sm.grain_state_typename) ``(`` [dataArg; castStateArg] ``)``))
                     in
                     ``class`` className ``<<`` [] ``>>``
                         ``:`` baseClassName ``,`` []

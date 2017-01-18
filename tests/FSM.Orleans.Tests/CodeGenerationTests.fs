@@ -390,7 +390,7 @@ module CodeGenerationTests =
                 {
                 }
 
-                public static explicit operator BankAccountGrainState(OverdrawnDepositResult value) => new BankAccountGrainState(result.StateMachineData, (BankAccountState)result.StateMachineState);
+                public static explicit operator BankAccountGrainState(OverdrawnDepositResult value) => new BankAccountGrainState(value.StateMachineData, (BankAccountState)value.StateMachineState);
             }
         }
 
@@ -508,7 +508,7 @@ module CodeGenerationTests =
                 {
                 }
 
-                public static explicit operator BankAccountGrainState(ActiveDepositResult value) => new BankAccountGrainState(result.StateMachineData, (BankAccountState)result.StateMachineState);
+                public static explicit operator BankAccountGrainState(ActiveDepositResult value) => new BankAccountGrainState(value.StateMachineData, (BankAccountState)value.StateMachineState);
             }
 
             public class ActiveWithdrawalResult : StateMachineGrainState<BankAccountData, BankAccountState>.StateTransitionResult<ActiveWithdrawalResultState>
@@ -517,7 +517,7 @@ module CodeGenerationTests =
                 {
                 }
 
-                public static explicit operator BankAccountGrainState(ActiveWithdrawalResult value) => new BankAccountGrainState(result.StateMachineData, (BankAccountState)result.StateMachineState);
+                public static explicit operator BankAccountGrainState(ActiveWithdrawalResult value) => new BankAccountGrainState(value.StateMachineData, (BankAccountState)value.StateMachineState);
             }
         }
 
@@ -609,7 +609,7 @@ module CodeGenerationTests =
                 {
                 }
 
-                public static explicit operator BankAccountGrainState(ZeroBalanceDepositResult value) => new BankAccountGrainState(result.StateMachineData, (BankAccountState)result.StateMachineState);
+                public static explicit operator BankAccountGrainState(ZeroBalanceDepositResult value) => new BankAccountGrainState(value.StateMachineData, (BankAccountState)value.StateMachineState);
             }
 
             public class ZeroBalanceCloseResult : StateMachineGrainState<BankAccountData, BankAccountState>.StateTransitionResult<ZeroBalanceCloseResultState>
@@ -618,7 +618,7 @@ module CodeGenerationTests =
                 {
                 }
 
-                public static explicit operator BankAccountGrainState(ZeroBalanceCloseResult value) => new BankAccountGrainState(result.StateMachineData, (BankAccountState)result.StateMachineState);
+                public static explicit operator BankAccountGrainState(ZeroBalanceCloseResult value) => new BankAccountGrainState(value.StateMachineData, (BankAccountState)value.StateMachineState);
             }
         }
     }
