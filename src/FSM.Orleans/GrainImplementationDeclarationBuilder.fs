@@ -21,8 +21,6 @@ module GrainImplementationDeclarationBuilder =
         let matchMethodOnState =
             sprintf "state.Match<%s>" returnType |> ident
 
-        let stateTypeName = ``type`` sm.grain_state_typename
-
         let methodArguments =
             vm.StateDefinitions
             |> Seq.map (state_to_state_processor_name >> ident >> SyntaxFactory.ParenthesizedLambdaExpression)
@@ -31,7 +29,7 @@ module GrainImplementationDeclarationBuilder =
         in
         [
             ``arrow_method`` returnType "GetProcessorFunc" ``<<`` [] ``>>``
-                ``(`` [ ("state", stateTypeName) ] ``)``
+                ``(`` [ ("state", ``type`` sm.state_typename) ] ``)``
                 [``protected``; ``override``]
                 (Some (``=>`` (``invoke`` matchMethodOnState ``(`` methodArguments ``)``)))
             :> MemberDeclarationSyntax
@@ -155,7 +153,7 @@ module GrainImplementationDeclarationBuilder =
                     let lambda =
                         ``=>`` (``() =>`` parameterList handlerWithCast)
 
-                    let lambdaType = System.String.Join("," , (argTypeMaybe ?+ [ (sprintf "Task<%s>" sm.grain_state_typename) ])) |> sprintf "Func<%s>"
+                    let lambdaType = System.String.Join(", " , (argTypeMaybe ?+ [ (sprintf "Task<%s>" sm.grain_state_typename) ])) |> sprintf "Func<%s>"
                     let methodName = sprintf "Handle%sState%sMessage" state_name messageName
                     in
                     ``arrow_method`` lambdaType methodName ``<<`` [] ``>>``

@@ -22,7 +22,7 @@ module Machine =
 
         member this.grain_state_typename = sprintf "%sGrainState" this.machine_name
 
-        member this.grain_impl_base_typename = sprintf "StateMachineGrain<%s,%s,%s,%s>" this.grain_state_typename this.data_typename this.state_typename this.message_typename
+        member this.grain_impl_base_typename = sprintf "StateMachineGrain<%s, %s, %s, %s>" this.grain_state_typename this.data_typename this.state_typename this.message_typename
 
         member this.state_typename = sprintf "%sState" this.machine_name
         member this.state_union =
