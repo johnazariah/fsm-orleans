@@ -320,7 +320,7 @@ module CodeGenerationTests =
         private static class OverdrawnStateMessageDelegator
         {
             private static readonly IOverdrawnStateMessageHandler _handler = new OverdrawnStateMessageHandler();
-            public static Func<Amount, Task<BankAccountGrainState>> HandleOverdrawnStateDepositMessage(BankAccountGrainState state) => (state, amount) => _handler.Deposit(state, amount).ContinueWith(result => (BankAccountGrainState)(result.Result));
+            public static Func<Amount, Task<BankAccountGrainState>> HandleOverdrawnStateDepositMessage(BankAccountGrainState state) => (amount) => _handler.Deposit(state, amount).ContinueWith(result => (BankAccountGrainState)(result.Result));
         }
 
         private partial class OverdrawnStateMessageHandler : IOverdrawnStateMessageHandler
@@ -404,8 +404,8 @@ module CodeGenerationTests =
         private static class ActiveStateMessageDelegator
         {
             private static readonly IActiveStateMessageHandler _handler = new ActiveStateMessageHandler();
-            public static Func<Amount, Task<BankAccountGrainState>> HandleActiveStateDepositMessage(BankAccountGrainState state) => (state, amount) => _handler.Deposit(state, amount).ContinueWith(result => (BankAccountGrainState)(result.Result));
-            public static Func<Amount, Task<BankAccountGrainState>> HandleActiveStateWithdrawalMessage(BankAccountGrainState state) => (state, amount) => _handler.Withdrawal(state, amount).ContinueWith(result => (BankAccountGrainState)(result.Result));
+            public static Func<Amount, Task<BankAccountGrainState>> HandleActiveStateDepositMessage(BankAccountGrainState state) => (amount) => _handler.Deposit(state, amount).ContinueWith(result => (BankAccountGrainState)(result.Result));
+            public static Func<Amount, Task<BankAccountGrainState>> HandleActiveStateWithdrawalMessage(BankAccountGrainState state) => (amount) => _handler.Withdrawal(state, amount).ContinueWith(result => (BankAccountGrainState)(result.Result));
         }
 
         private partial class ActiveStateMessageHandler : IActiveStateMessageHandler
@@ -531,8 +531,8 @@ module CodeGenerationTests =
         private static class ZeroBalanceStateMessageDelegator
         {
             private static readonly IZeroBalanceStateMessageHandler _handler = new ZeroBalanceStateMessageHandler();
-            public static Func<Amount, Task<BankAccountGrainState>> HandleZeroBalanceStateDepositMessage(BankAccountGrainState state) => (state, amount) => _handler.Deposit(state, amount).ContinueWith(result => (BankAccountGrainState)(result.Result));
-            public static Func<Task<BankAccountGrainState>> HandleZeroBalanceStateCloseMessage(BankAccountGrainState state) => (state) => _handler.Close(state).ContinueWith(result => (BankAccountGrainState)(result.Result));
+            public static Func<Amount, Task<BankAccountGrainState>> HandleZeroBalanceStateDepositMessage(BankAccountGrainState state) => (amount) => _handler.Deposit(state, amount).ContinueWith(result => (BankAccountGrainState)(result.Result));
+            public static Func<Task<BankAccountGrainState>> HandleZeroBalanceStateCloseMessage(BankAccountGrainState state) => () => _handler.Close(state).ContinueWith(result => (BankAccountGrainState)(result.Result));
         }
 
         private partial class ZeroBalanceStateMessageHandler : IZeroBalanceStateMessageHandler

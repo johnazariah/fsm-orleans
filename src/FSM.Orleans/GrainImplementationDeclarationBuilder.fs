@@ -135,10 +135,10 @@ module GrainImplementationDeclarationBuilder =
                     let parameterList =
                         argTypeMaybe
                         |> Option.map toParameterName
-                        |> Option.fold (fun s a -> s @ [ a ]) [ "state" ]
+                        |> Option.fold (fun _ a -> [ a ]) []
 
                     let handlerMethod =
-                        ``invoke`` ((ident "_handler") <|.|> messageName)  ``(`` (parameterList |> List.map ident) ``)``
+                        ``invoke`` ((ident "_handler") <|.|> messageName)  ``(`` (("state" :: parameterList) |> List.map ident) ``)``
 
                     let handlerWithCast =
                         let castMethod =
