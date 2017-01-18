@@ -19,7 +19,7 @@ let githubLink = "https://github.com/johnazariah/fsm-orleans"
 let info =
   [ "project-name", "FSM.Orleans"
     "project-author", "John Azariah"
-    "project-summary", "Strongly Typed State Machines for Orleans Actors[1;5D[1;5D[1;5D[1;5D[1;5D[1;5D[1;5D[1;5D[1;5D[1;5D[1;5D[1;5D[1;5D[1;5D[D[D[D[D[D[D[D[D[D[C[C[C[ D[2~SL[2~/Code Generator for Orleans Actors"
+    "project-summary", "Strongly Typed State Machines for Orleans Actors - DSL/Parser/Code Generator/VSIX"
     "project-github", githubLink
     "project-nuget", "http://nuget.org/packages/FSM.Orleans" ]
 

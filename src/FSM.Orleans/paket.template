@@ -1,6 +1,10 @@
-type project
-title
+type file
+
+id
     FSM.Orleans
+
+title
+    Strongly Typed State Machine for Microsoft Orleans
 owners
     John Azariah
 authors 
@@ -18,8 +22,10 @@ copyright
 tags
     Orleans State-Machines DSL Code-Generator
 summary
-    Strongly Typed State Machines for Orleans Actors[1;5D[1;5D[1;5D[1;5D[1;5D[1;5D[1;5D[1;5D[1;5D[1;5D[1;5D[1;5D[1;5D[1;5D[D[D[D[D[D[D[D[D[D[C[C[C[ D[2~SL[2~/Code Generator for Orleans Actors
+    Strongly Typed State Machines for Orleans Actors - DSL/Parser/Code Generator/VSIX
 description
-    [A[BA tool to parse and generate strongly-typed Orleans grains to implement state-machine-based applications
+    A tool to parse and generate strongly-typed Orleans grains to implement state-machine-based applications
 
-
+files
+    ../../bin/FSM.Orleans/FSM.Orleans.dll ==> lib/net452
+    ../../bin/FSM.Orleans.Core/FSM.Orleans.Core.dll ==> lib/net452

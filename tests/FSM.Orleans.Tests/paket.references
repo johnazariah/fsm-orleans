@@ -1,4 +1,8 @@
 FSharp.Core
+FParsec
+BrightSword.RoslynWrapper
+CSharp.UnionTypes
+
 group Test
 NUnit
 NUnit.Runners
