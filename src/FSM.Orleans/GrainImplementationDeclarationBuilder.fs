@@ -47,24 +47,19 @@ module GrainImplementationDeclarationBuilder =
                 |> Option.map mt_to_param_specification
                 |> Option.fold (fun _ s -> [s]) []
 
-            let methodInvokeArguments =
-                msg.MessageType
-                |> Option.map (mt_to_param_name >> ident)
-                |> Option.fold (fun _ s -> [s]) []
+            let message_name = sprintf "%sMessage" msg.MessageName.unapply
 
-            let methodBody =
-                let delegator =
-                    let methodName = ident (sprintf "%sMessage.%sMessage" sm.machine_name msg.MessageName.unapply)
-                    ``invoke`` methodName ``(`` methodInvokeArguments ``)``
-                in
-                ``await`` (``invoke`` (ident "ProcessMessage") ``(`` [ delegator ] ``)``)
+            let call =
+                match msg.MessageType with
+                | Some m -> let arg = m |> (mt_to_param_name >> ident) in (ident sm.message_typename) <.> (message_name, [ arg ])
+                | None -> (ident sm.message_typename) <|.|> message_name
 
             let methodType = sprintf "Task<%sData>" sm.machine_name
             in
             ``arrow_method`` methodType msg.MessageName.unapply ``<<`` [] ``>>``
                 ``(`` methodParams ``)``
                 [``public``; ``async``]
-                (Some (``=>`` methodBody))
+                (Some (``=>`` (``await`` (``invoke`` (ident "ProcessMessage") ``(`` [ call ] ``)``))))
             :> MemberDeclarationSyntax
         in
         vm.MessageBlock.Messages |> List.map to_message_endpoint
@@ -80,11 +75,11 @@ module GrainImplementationDeclarationBuilder =
 
             let to_state_processor_method =
                 let delegatorClassName = state_name |> sprintf "%sStateMessageDelegator"
+
                 let dispatchLambda messageName =
                     if sd.StateTransitions |> Seq.map (fun st -> (st.unapply |> fst)) |> Seq.contains (messageName) then
                         let delegateMethodName = sprintf "Handle%sState%sMessage" state_name messageName
-                        let delegateMethodArgs = [ident "state"]
-                        ``invoke`` ((ident delegatorClassName) <|.|> delegateMethodName) ``(`` delegateMethodArgs ``)``
+                        ident delegatorClassName <.> (delegateMethodName,  [ident "state"])
                     else
                         ident "HandleInvalidMessage" :> ExpressionSyntax
 

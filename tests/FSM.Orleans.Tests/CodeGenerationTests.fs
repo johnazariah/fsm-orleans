@@ -279,7 +279,7 @@ module CodeGenerationTests =
     {
         public async Task<BankAccountData> Deposit(Amount amount) => await ProcessMessage(BankAccountMessage.DepositMessage(amount));
         public async Task<BankAccountData> Withdrawal(Amount amount) => await ProcessMessage(BankAccountMessage.WithdrawalMessage(amount));
-        public async Task<BankAccountData> Close() => await ProcessMessage(BankAccountMessage.CloseMessage());
+        public async Task<BankAccountData> Close() => await ProcessMessage(BankAccountMessage.CloseMessage);
     }
 }"
 

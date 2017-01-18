@@ -15,6 +15,11 @@ namespace FSM.Orleans
             throw new InvalidMessage();
         }
 
+        protected static Task<TGrainState> HandleInvalidMessage<T>(T _)
+        {
+            throw new InvalidMessage();
+        }
+
         public async Task<TStateMachineData> ProcessMessage(TStateMachineMessage message)
         {
             // TODO : provide event-sourcing hooks here for messages and transitions
